@@ -1,0 +1,16 @@
+# gpio config file
+
+#host: localhost
+host: 192.168.9.76
+#port: 80
+key: 03B0DA5F36984EF98871844175EDCA6F
+
+actions:
+    - name: Up
+      gpio: 7
+      control: api/printer/printhead
+      json: "{ \"command\": \"jog\", \"Z\":+5 }"
+    - name: Down
+      gpio: 8
+      control: api/printer/printhead
+      json: "{ \"command\": \"jog\", \"Z\":-5 }"

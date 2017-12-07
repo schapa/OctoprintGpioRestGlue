@@ -9,6 +9,7 @@ export CFLAGS := \
 	-I./inc \
 	-ffunction-sections \
 	-fdata-sections \
+	$(shell pkg-config --cflags yaml-0.1) \
 	$(shell pkg-config --cflags jansson) \
 	$(shell pkg-config --cflags libcurl) \
 	
@@ -22,6 +23,9 @@ export LDFLAGS := \
 	-rdynamic \
 	-lc \
 	-lpthread \
+
+export LDLIBS :=\
+	$(shell pkg-config --libs yaml-0.1) \
 	$(shell pkg-config --libs jansson) \
 	$(shell pkg-config --libs libcurl) \
 
