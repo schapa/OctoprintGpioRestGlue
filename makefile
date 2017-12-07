@@ -7,16 +7,18 @@ export BUILD_ROOT :=$(BUILD_DIR)
 include common-defs.mk
 include app.mk
 
-.PHONY: all firmware emulator clean
+.PHONY: all emulator firmware clean
 
-all: firmware 
+all: emulator firmware 
 
-firmware:
-	$(MAKE) -f firmware.mk
 emulator:
 	$(MAKE) -f emulator.mk
+	
+firmware:
+	$(MAKE) -f firmware.mk
 
 clean::
+	$(MAKE) -f emulator.mk $@
 	$(MAKE) -f firmware.mk $@
 	
 include build.mk

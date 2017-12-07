@@ -2,25 +2,32 @@
 export PROGNAME := GpioGlue
 
 export CFLAGS := \
+	-fmessage-length=0 \
+	-fsigned-char \
+	-Wall \
+	-Wextra \
 	-I./inc \
 	-ffunction-sections \
 	-fdata-sections \
+	$(shell pkg-config --cflags jansson) \
+	$(shell pkg-config --cflags libcurl) \
 	
 export SRC := \
 	$(wildcard ./src/*.c) \
 	$(wildcard ./src/*.cpp) \
 
 export LDFLAGS := \
-        -fmessage-length=0 \
-        -fsigned-char \
-        -ffunction-sections \
-        -fdata-sections \
-        -Xlinker --gc-sections \
-	-Wall \
-        -Wextra \
-        -lc \
-        -lpthread \
-        -rdynamic \
-        -ljansson \
-        -lcurl \
+	-ffunction-sections \
+	-fdata-sections \
+	-rdynamic \
+	-lc \
+	-lpthread \
+	$(shell pkg-config --libs jansson) \
+	$(shell pkg-config --libs libcurl) \
+
+ifeq ($(shell uname),Darwin)
+	LDFLAGS += -Xlinker -dead_strip 
+else
+	LDFLAGS += -Xlinker --gc-sections 
+endif
 
