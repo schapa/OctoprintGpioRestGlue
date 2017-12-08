@@ -19,9 +19,10 @@ public:
 	std::string apiKey() const;
 	std::string host() const;
 	std::string port() const;
-
-private:
 	std::string get(const std::string& key) const;
+
+	typedef std::map<std::string, std::string> Storage;
+	const Storage& storage() const { return map_; }
 
 private:
 	const std::string path_;
