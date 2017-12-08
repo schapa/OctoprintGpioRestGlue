@@ -21,10 +21,10 @@ export LDFLAGS := \
 	-ffunction-sections \
 	-fdata-sections \
 	-rdynamic \
-	-lc \
-	-lpthread \
 
 export LDLIBS :=\
+	-lc \
+	-lpthread \
 	$(shell pkg-config --libs yaml-0.1) \
 	$(shell pkg-config --libs jansson) \
 	$(shell pkg-config --libs libcurl) \

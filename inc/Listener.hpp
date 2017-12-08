@@ -20,6 +20,7 @@ public:
 
 private:
 	static void* thread (void *arg);
+	bool readGpio(int fd, char &val);
 private:
 	std::atomic<bool> running_;
 	const Config& cfg_;
