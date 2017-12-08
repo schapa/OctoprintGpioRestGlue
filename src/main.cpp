@@ -5,7 +5,7 @@
 #include "Config.hpp"
 #include "Curl.hpp"
 #include "Listener.hpp"
-#include <sched.h>
+#include <unistd.h>
 
 int main() {
 	const std::string path("./config.yaml");
@@ -31,9 +31,14 @@ int main() {
 		listeners.push_back(new Listener(cfg, name, pin, control, json));
 	}
 
-	while (true) {
-		sched_yield();
-	}
+	bool active = false;
+	do {
+		sleep(1);
+		active = false;
+		for (auto it = listeners.begin(), end = listeners.end(); it != end; ++it) {
+			active |= (*it)->isActive();
+		}
+	} while (active);
 
 	return 0;
 }

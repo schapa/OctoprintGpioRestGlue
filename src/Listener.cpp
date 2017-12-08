@@ -60,6 +60,7 @@ void* Listener::thread (void *arg) {
 	int fd = open(pinValuePath.c_str(), O_RDONLY);
 	if (fd < 0) {
 		std::cerr << "File '" << pinValuePath << "' could not be accessed" << std::endl;
+		thiz->running_ = false;
 		return NULL;
 	}
 
@@ -69,17 +70,22 @@ void* Listener::thread (void *arg) {
 	pollfd[0].revents = 0;
 
 	char previousVal;
-	if (!thiz->readGpio(fd, previousVal))
+	if (!thiz->readGpio(fd, previousVal)) {
+		thiz->running_ = false;
 		return NULL;
+	}
 	while (thiz->running_) {
 		int res = poll(pollfd, 1, 40);
 		if (res < 0) {
 			std::cerr << "Polling for '" << pinValuePath << "' failed " << strerror(res) << std::endl;
+			thiz->running_ = false;
 			return NULL;
 		}
 		char value;
-		if (!thiz->readGpio(fd, value))
+		if (!thiz->readGpio(fd, value)) {
+			thiz->running_ = false;
 			return NULL;
+		}
 		if (previousVal != value) {
 			std::cout << "Poll '" << pinValuePath << "' value " << value << std::endl;
 			previousVal = value;
@@ -90,6 +96,7 @@ void* Listener::thread (void *arg) {
 
 		}
 	}
+	thiz->running_ = false;
 	return NULL;
 }
 

@@ -18,6 +18,8 @@ public:
 	Listener(const Config& cfg, const std::string& name, const std::string& pin, const std::string& contol, const std::string& json);
 	~Listener();
 
+	bool isActive() const { return running_; }
+
 private:
 	static void* thread (void *arg);
 	bool readGpio(int fd, char &val);
